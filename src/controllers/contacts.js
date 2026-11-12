@@ -8,7 +8,19 @@ const {
 const createHttpError = require('http-errors');
 
 const getContactsController = async (req, res) => {
-  const contacts = await getAllContacts();
+  const { page, perPage, sortBy, sortOrder, type, contactType, isFavourite } =
+    req.query;
+
+  const contacts = await getAllContacts({
+    page,
+    perPage,
+    sortBy,
+    sortOrder,
+    filter: {
+      contactType: type || contactType,
+      isFavourite,
+    },
+  });
 
   res.status(200).json({
     status: 200,
