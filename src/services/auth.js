@@ -13,6 +13,11 @@ const registerUser = async (payload) => {
 
 const findUserByEmail = (email) => User.findOne({ email });
 
+const updateUserPassword = async (userId, password) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
+  return User.findByIdAndUpdate(userId, { password: hashedPassword }, { new: true });
+};
+
 const createSession = async (userId) => {
   await Session.deleteMany({ userId: userId.toString() });
 
@@ -32,6 +37,9 @@ const findSession = (sessionId, refreshToken) =>
 const deleteSession = (sessionId, refreshToken) =>
   Session.deleteOne({ _id: sessionId, refreshToken });
 
+const deleteSessionsByUserId = (userId) =>
+  Session.deleteMany({ userId: userId.toString() });
+
 const findUserByAccessToken = async (accessToken) => {
   const session = await Session.findOne({ accessToken });
 
@@ -45,8 +53,10 @@ const findUserByAccessToken = async (accessToken) => {
 module.exports = {
   registerUser,
   findUserByEmail,
+  updateUserPassword,
   createSession,
   findSession,
   deleteSession,
+  deleteSessionsByUserId,
   findUserByAccessToken,
 };

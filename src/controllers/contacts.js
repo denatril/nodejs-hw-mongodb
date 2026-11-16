@@ -6,6 +6,7 @@ const {
   deleteContact,
 } = require('../services/contacts');
 const createHttpError = require('http-errors');
+const saveFileToCloudinary = require('../utils/saveFileToCloudinary');
 
 const getContactsController = async (req, res) => {
   const { page, perPage, sortBy, sortOrder, type, contactType, isFavourite } =
@@ -45,7 +46,17 @@ const getContactByIdController = async (req, res) => {
 };
 
 const createContactController = async (req, res) => {
-  const contact = await createContact(req.body, req.user._id);
+  let photo;
+
+  if (req.file) {
+    try {
+      photo = await saveFileToCloudinary(req.file);
+    } catch {
+      throw createHttpError(500, 'Failed to upload contact photo');
+    }
+  }
+
+  const contact = await createContact({ ...req.body, ...(photo && { photo }) }, req.user._id);
 
   res.status(201).json({
     status: 201,
@@ -56,7 +67,20 @@ const createContactController = async (req, res) => {
 
 const patchContactController = async (req, res) => {
   const { contactId } = req.params;
-  const contact = await updateContact(contactId, req.body, req.user._id);
+  let photo;
+
+  if (req.file) {
+    try {
+      photo = await saveFileToCloudinary(req.file);
+    } catch {
+      throw createHttpError(500, 'Failed to upload contact photo');
+    }
+  }
+  const contact = await updateContact(
+    contactId,
+    { ...req.body, ...(photo && { photo }) },
+    req.user._id,
+  );
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found');
