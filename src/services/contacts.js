@@ -1,6 +1,6 @@
 const Contact = require('../db/models/contact');
 
-const getAllContacts = async ({
+const getAllContacts = async (userId, {
   page = 1,
   perPage = 10,
   sortBy = 'name',
@@ -21,7 +21,7 @@ const getAllContacts = async ({
   ];
   const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'name';
   const sortDirection = sortOrder === 'desc' ? -1 : 1;
-  const queryFilter = {};
+  const queryFilter = { userId: userId.toString() };
 
   if (filter.contactType) {
     queryFilter.contactType = filter.contactType;
@@ -55,14 +55,21 @@ const getAllContacts = async ({
   };
 };
 
-const getContactById = (contactId) => Contact.findById(contactId);
+const getContactById = (contactId, userId) =>
+  Contact.findOne({ _id: contactId, userId: userId.toString() });
 
-const createContact = (payload) => Contact.create(payload);
+const createContact = (payload, userId) =>
+  Contact.create({ ...payload, userId: userId.toString() });
 
-const updateContact = (contactId, payload) =>
-  Contact.findByIdAndUpdate(contactId, payload, { new: true });
+const updateContact = (contactId, payload, userId) =>
+  Contact.findOneAndUpdate(
+    { _id: contactId, userId: userId.toString() },
+    payload,
+    { new: true },
+  );
 
-const deleteContact = (contactId) => Contact.findByIdAndDelete(contactId);
+const deleteContact = (contactId, userId) =>
+  Contact.findOneAndDelete({ _id: contactId, userId: userId.toString() });
 
 module.exports = {
   getAllContacts,

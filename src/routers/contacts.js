@@ -9,12 +9,15 @@ const {
 const ctrlWrapper = require('../utils/ctrlWrapper');
 const validateBody = require('../middlewares/validateBody');
 const isValidId = require('../middlewares/isValidId');
+const authenticate = require('../middlewares/authenticate');
 const {
   createContactSchema,
   updateContactSchema,
 } = require('../validation/contacts');
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.get('/', ctrlWrapper(getContactsController));
 router.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
