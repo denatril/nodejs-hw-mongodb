@@ -4,3 +4,4 @@ atlas-credentials.env
 coverage/
 *.log
 instructions.md
+cookies.txt
