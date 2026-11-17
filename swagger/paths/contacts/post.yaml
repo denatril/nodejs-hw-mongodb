@@ -1,0 +1,41 @@
+tags: [Contacts]
+summary: Create a contact
+operationId: createContact
+description: Creates a contact for the authenticated user. Send fields as multipart form data to include a photo.
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required: [name, phoneNumber, contactType]
+        properties:
+          name: { type: string, minLength: 3, maxLength: 20 }
+          phoneNumber: { type: string, minLength: 3, maxLength: 20 }
+          email: { type: string, format: email }
+          isFavourite: { type: boolean }
+          contactType: { type: string, enum: [work, home, personal] }
+          photo: { type: string, format: binary }
+responses:
+  '201':
+    description: Contact created.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            status: { type: integer, example: 201 }
+            message: { type: string, example: Successfully created a contact! }
+            data: { $ref: '../../components/schemas.yaml#/Contact' }
+  '401':
+    description: Missing, invalid, or expired access token.
+    content:
+      application/json:
+        schema: { $ref: '../../components/schemas.yaml#/Error' }
+  '400':
+    description: Invalid contact fields or uploaded file.
+    content:
+      application/json:
+        schema: { $ref: '../../components/schemas.yaml#/Error' }

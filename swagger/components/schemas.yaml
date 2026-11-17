@@ -1,0 +1,19 @@
+Contact:
+  type: object
+  properties:
+    _id: { type: string, example: 65ca67e7ae7f10c88b5982e3 }
+    name: { type: string, example: Ada Lovelace }
+    phoneNumber: { type: string, example: '+12025550123' }
+    email: { type: [string, 'null'], format: email, example: ada@example.com }
+    isFavourite: { type: boolean, default: false }
+    contactType: { type: string, enum: [work, home, personal] }
+    photo: { type: [string, 'null'], format: uri }
+    userId: { type: string }
+    createdAt: { type: string, format: date-time }
+    updatedAt: { type: string, format: date-time }
+Error:
+  type: object
+  properties:
+    status: { type: integer }
+    message: { type: string }
+    data: { type: string }

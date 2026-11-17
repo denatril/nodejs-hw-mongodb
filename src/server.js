@@ -6,6 +6,8 @@ const contactsRouter = require('./routers/contacts');
 const authRouter = require('./routers/auth');
 const notFoundHandler = require('./middlewares/notFoundHandler');
 const errorHandler = require('./middlewares/errorHandler');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../docs/swagger.json');
 
 const setupServer = () => {
   const app = express();
@@ -17,6 +19,7 @@ const setupServer = () => {
 
   app.use('/auth', authRouter);
   app.use('/contacts', contactsRouter);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.use(notFoundHandler);
   app.use(errorHandler);
