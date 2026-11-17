@@ -1,0 +1,35 @@
+tags:
+  - Authentication
+summary: Log in
+operationId: loginUser
+description: Authenticates a user, sets session and refresh token cookies, and returns an access token.
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas.yaml#/LoginRequest
+responses:
+  '200':
+    description: Login succeeded. HttpOnly sessionId and refreshToken cookies are set.
+    headers:
+      Set-Cookie:
+        description: Session and refresh token cookies.
+        schema:
+          type: string
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas.yaml#/AccessTokenResponse
+  '400':
+    description: Request body validation failed.
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas.yaml#/Error
+  '401':
+    description: Email or password is incorrect.
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas.yaml#/Error

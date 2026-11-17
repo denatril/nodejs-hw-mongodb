@@ -1,0 +1,30 @@
+tags:
+  - Authentication
+summary: Register a user
+operationId: registerUser
+description: Creates an account. The password is stored as a bcrypt hash and is not returned.
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: ../../components/schemas.yaml#/RegisterRequest
+responses:
+  '201':
+    description: User registered successfully.
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas.yaml#/AuthResponse
+  '400':
+    description: Request body validation failed.
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas.yaml#/Error
+  '409':
+    description: Email is already in use.
+    content:
+      application/json:
+        schema:
+          $ref: ../../components/schemas.yaml#/Error

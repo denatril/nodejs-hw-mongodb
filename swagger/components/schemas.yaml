@@ -11,6 +11,43 @@ Contact:
     userId: { type: string }
     createdAt: { type: string, format: date-time }
     updatedAt: { type: string, format: date-time }
+RegisterRequest:
+  type: object
+  required: [name, email, password]
+  properties:
+    name: { type: string, example: Oğuzhan }
+    email: { type: string, format: email, example: oguzhan@example.com }
+    password: { type: string, format: password, example: change-me }
+LoginRequest:
+  type: object
+  required: [email, password]
+  properties:
+    email: { type: string, format: email, example: oguzhan@example.com }
+    password: { type: string, format: password, example: change-me }
+User:
+  type: object
+  properties:
+    _id: { type: string, example: 65ca67e7ae7f10c88b5982e3 }
+    name: { type: string, example: Oğuzhan }
+    email: { type: string, format: email, example: oguzhan@example.com }
+    createdAt: { type: string, format: date-time }
+    updatedAt: { type: string, format: date-time }
+AuthResponse:
+  type: object
+  properties:
+    status: { type: integer, example: 201 }
+    message: { type: string, example: Successfully registered a user! }
+    data:
+      $ref: '#/User'
+AccessTokenResponse:
+  type: object
+  properties:
+    status: { type: integer, example: 200 }
+    message: { type: string, example: Successfully logged in an user! }
+    data:
+      type: object
+      properties:
+        accessToken: { type: string, example: 25f410ae-37c9-499a-8c69-123119951630 }
 Error:
   type: object
   properties:

@@ -29,7 +29,26 @@ paths:
       $ref: ../swagger/paths/contacts/{id}/patch.yaml
     delete:
       $ref: ../swagger/paths/contacts/{id}/delete.yaml
+  /auth/register:
+    post:
+      $ref: ../swagger/paths/auth/register.yaml
+  /auth/login:
+    post:
+      $ref: ../swagger/paths/auth/login.yaml
 components:
+  schemas:
+    RegisterRequest:
+      $ref: ../swagger/components/schemas.yaml#/RegisterRequest
+    LoginRequest:
+      $ref: ../swagger/components/schemas.yaml#/LoginRequest
+    User:
+      $ref: ../swagger/components/schemas.yaml#/User
+    AuthResponse:
+      $ref: ../swagger/components/schemas.yaml#/AuthResponse
+    AccessTokenResponse:
+      $ref: ../swagger/components/schemas.yaml#/AccessTokenResponse
+    Error:
+      $ref: ../swagger/components/schemas.yaml#/Error
   securitySchemes:
     bearerAuth:
       type: http
